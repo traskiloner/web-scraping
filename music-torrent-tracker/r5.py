@@ -6,9 +6,7 @@ import urllib2
 from time import time
 url_general = "http://music-torrent.net/"
 print "Introduzca 1 para generar un fichero de URLs"
-print "Introduzca 2 para generar un fichero XML"
-print "Introduzca 3 para obtener todos los ficheros torrents"
-print "Introduzca 4 para buscar un album dentro del fichero XML"
+print "Introduzca 2 para ver la información de cada album"
 opcion = raw_input("Opción: ")
 
 if opcion == "1":
@@ -78,33 +76,36 @@ elif opcion == "2":
                 return respuesta
             except:
                 return "error"
-        dic_autores = {"autor": "","albunes":[]}
+        #dic_autores = {}
         for url in lista_urls:
-            print url
+            #print dic_autores
 
             if comprueba_url(url) != "error":
                 html = comprueba_url(url).readlines()
-                dic_album = {"titulo":"", "año":"","tracklist":[],"url":"", "url_torrent":""}
+               # dic_album = {"titulo":"", "año":"","tracklist":[],"url":"", "url_torrent":""}
                 numero_linea = 0
 
                 for a in html:
                     numero_linea = numero_linea + 1
 
                     if numero_linea == 66:
-                        print "Autor: ",a.strip()[:-5]
-                        if a.strip()[:-5] not in dic_autores.values():
-                            dic_autores["autor"] = a.strip()[:-5]
+                        print a.strip()[:-5]
+                        #grupo = a.strip()[:-5]
+                        #if grupo not in dic_autores.keys():
+                        #    dic_autores[grupo] = []
+
                     if numero_linea == 71:
                         print "Año: ",a.strip()
-
+                        #dic_album["año"] = a.strip()
                     if numero_linea == 74:
                         print "Album: ",a.strip()[:-5]
-
+                        #dic_album["titulo"] = a.strip()[:-5]
                     if numero_linea >= 102 and a.strip().startswith('<li>'):
                         print "Cancion: ",a.strip()[4:-5]
+                        #dic_album["tracklist"].append(a.strip()[4:-5])
 
                     if numero_linea >= 103 and a.strip().startswith('<a class="btn btn-lg btn-success'):
                         print "Fichero torrent: ",url_general + a.strip()[65:-2]
-
-elif opcion == "3":
-    print "Opcion 3"
+                        #dic_album["url_torrent"] = url_general + a.strip()[65:-2]
+                #dic_album["url"] = url
+                #dic_autores[grupo].append(dic_album)
